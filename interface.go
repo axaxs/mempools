@@ -1,18 +1,17 @@
 package mempools
 
-
 type InterfacePool struct {
-	list []interface{}
+	list  []interface{}
 	index int
-	New func() interface{}
+	New   func() interface{}
 }
 
 func (o *InterfacePool) Alloc() interface{} {
-        if o.index >= len(o.list) {
-                o.list = append(o.list, o.New())
-        }
-        o.index++
-        return o.list[o.index-1]
+	if o.index >= len(o.list) {
+		o.list = append(o.list, o.New())
+	}
+	o.index++
+	return o.list[o.index-1]
 }
 
 func (o *InterfacePool) Reset() {
@@ -20,5 +19,5 @@ func (o *InterfacePool) Reset() {
 }
 
 func (o *InterfacePool) Destroy() {
-	o = &InterfacePool{}
+	o = &InterfacePool{New: o.New}
 }
